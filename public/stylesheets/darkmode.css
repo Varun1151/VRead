@@ -1,0 +1,41 @@
+
+/* *,
+*::before,
+*::after {
+  box-sizing: border-box;
+} */
+
+:root {
+  --clr-light: #fff;
+  --clr-dark: #000;
+  --clr-primary: #dbffa2;
+  --clr-secondary: #c3fcf2;
+
+  --foreground: var(--clr-dark);
+  --background: var(--clr-light);
+
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.darkmode {
+  --clr-light: #fff;
+  --clr-dark: #000;
+  --clr-primary: #202302;
+  --clr-secondary: #00100d;
+
+  --foreground: var(--clr-light);
+  --background: var(--clr-dark);
+}
+
+
+.dark-mode-toggle {
+  color: var(--foreground);
+}
+
+

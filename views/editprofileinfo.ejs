@@ -1,0 +1,40 @@
+<%- include("header") -%>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/darkmode.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/profile.css">
+    </head>
+
+    <body>
+        <%- include("navbar") -%>
+            <br>
+            <%- include("flash") -%>
+                <br>
+
+                <div>
+                    <form action="/editprofileinfo?_method=PUT" method="POST">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" name="editeduser[Name]" class="form-control" id="name" value="<%= user.Name%>" placeholder="Name (max 20 charcaters)" maxlength=20 required title="Exceeded 20 characters">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="addr">Address</label>
+                            <input type="text" name="editeduser[Address]" class="form-control" id="addr" placeholder="address" value="<%= user.Address%>">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phno">Phone Number</label>
+                            <input type="tel" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="editeduser[Ph_No]" class="form-control" id="phno" placeholder="Phno" pattern="[0-9]{10}" required title="Not a mobile number" value="<%= user.Ph_No%>">
+                        </div>
+
+                        <div class="form-group ">
+                            <label for="email ">Email</label>
+                            <input type="email " name="editeduser[Email]" class="form-control " id="email " placeholder="email " required title="Enter a valid email" value="<%= user.Email%>">
+                        </div>
+                        <button class="btn btn-primary " type="submit ">Edit</button>
+                    </form>
+                </div>
+                </div>
+                <%- include("footer") -%>

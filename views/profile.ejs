@@ -1,0 +1,42 @@
+<%- include("header") -%>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/darkmode.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/profile.css">
+    </head>
+
+    <body>
+        <%- include("navbar") -%>
+            <br>
+            <%- include("flash") -%>
+                <br>
+
+                <div class="row text-center" style="display:flex; flex-wrap:wrap;">
+                    <div class="img-thumbnail">
+                        <img class="img-responsive photo" src="data:<%=user.User_Photo.contentType%>;base64, 
+                     <%=user.User_Photo.data.toString('base64')%>">
+                        <a class="btn btn-info" href="/editprofilepic" style="margin-top: 5px;">Edit Profile Photo</a>
+                    </div>
+                    <div class="userinfo img-thumbnail">
+                        <h1>
+                            <%=user.Name%>
+                        </h1>
+                        <h3>USN :
+                            <%=user.username%>
+                        </h3>
+                        <h3>Mobile No :
+                            <%=user.Ph_No%>
+                        </h3>
+                        <h3>Address :
+                            <%=user.Address%>
+                        </h3>
+                        <h3>Email :
+                            <%=user.Email%>
+                        </h3>
+                        <br>
+                        <a class="btn btn-warning" href="/editprofileinfo">Edit info</a>
+                    </div>
+                </div>
+                </div>
+                <%- include("footer") -%>

@@ -1,0 +1,14 @@
+.photo {
+    width: 400px;
+    height: 400px;
+}
+
+.img-thumbnail {
+    width: 410px;
+    height: 460px;
+    margin: 5px;
+}
+
+.userinfo {
+    color: black;
+}

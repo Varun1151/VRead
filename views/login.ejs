@@ -1,0 +1,32 @@
+<%- include("header") -%>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/darkmode.css">
+    </head>
+
+    <body>
+        <%- include("navbar") -%>
+
+            <br>
+
+            <%- include("flash") -%>
+                <br>
+                <h1>Login</h1>
+                <form action="/login" method="POST">
+                    <div class="form-group">
+                        <label for="usn">USN</label>
+                        <input type="text" name="username" class="form-control" id="usn" placeholder="USN" minlength=10 maxlength=10 pattern="1[Mm][Ss][0-9]{2}[A-Za-z]{2}[0-9]{3}" required value="1MS">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" class="form-control" id="password" placeholder="password">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                </form>
+                <br>
+                <p>Do not have a account
+                    <a href="/signup" class="btn btn-secondary btn-lg">Sign Up</a>
+                </p>
+                </div>
+                <%- include("footer") -%>

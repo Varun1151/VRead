@@ -1,0 +1,28 @@
+<%- include("header") -%>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/darkmode.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/profile.css">
+    </head>
+
+    <body>
+        <%- include("navbar") -%>
+            <br>
+            <%- include("flash") -%>
+                <br>
+
+                <div class="row text-center" style="display:flex; flex-wrap:wrap;">
+                    <div class="img-thumbnail">
+                        <img class="img-responsive photo" src="data:<%=user.User_Photo.contentType%>;base64, 
+                     <%=user.User_Photo.data.toString('base64')%>">
+                        <h5 style="color: black;">Current profile pic</h5>
+                    </div>
+
+                    <form action="/editprofilepic?_method=PUT" method="POST" enctype="multipart/form-data">
+                        <input type="file" name="image" class="form-control-file" id="image" accept="image/*" required>
+                        <button class="btn btn-primary" type="submit">Edit</button>
+                    </form>
+                </div>
+                </div>
+                <%- include("footer") -%>

@@ -1,0 +1,61 @@
+<%- include("header") -%>
+    <title>Sign Up</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/darkmode.css">
+    </head>
+
+    <body>
+        <%- include("navbar") -%>
+            <br><br>
+
+            <%- include("flash") -%>
+                <h1>Sign Up</h1>
+                <form action="/signup" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="usn">USN</label>
+                        <input type="text" name="username" class="form-control" id="usn" placeholder="USN" minlength=10 maxlength=10 pattern="1[Mm][Ss][0-9]{2}[A-Za-z]{2}[0-9]{3}" required title="Enter valid usn" value="1MS">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" class="form-control" id="name" placeholder="Name (max 20 charcaters)" maxlength=20 required title="Exceeded 20 characters">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Profile Photo</label>
+                        <h6>Add a valid photo of yours</h6>
+                        <input type="file" name="image" class="form-control-file" id="image" accept="image/*" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addr">Address</label>
+                        <input type="text" name="addr" class="form-control" id="addr" placeholder="address">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phno">Phone Number</label>
+                        <input type="tel" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="phno" class="form-control" id="phno" placeholder="Phno" pattern="[0-9]{10}" required title="Not a mobile number">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" class="form-control" id="email" placeholder="email" required title="Enter a valid email">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" class="form-control" id="password" placeholder="password (min 7 charcaters)" minlength=7 required title="Minimum 7 characters">
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+                </form>
+                <br>
+                <p>Already have a account
+                    <a href="/login" class="btn btn-secondary btn-lg">Login</a>
+                </p>
+                </div>
+                <br>
+                <%- include("footer") -%>
