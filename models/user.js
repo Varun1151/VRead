@@ -1,6 +1,7 @@
 const mongoose = require("../db/mongoose")
 const passportLocalMongoose = require("passport-local-mongoose")
 const validator = require("validator")
+const Book = require("./book")
 
 var userSchema = new mongoose.Schema({
     username: {
@@ -64,11 +65,12 @@ var userSchema = new mongoose.Schema({
     timestamps: true
 })
 
-// userSchema.virtual("memes", {
-//     ref: "Meme",
-//     localField: "_id",
-//     foreignField: "author" //name on other thing  here its task
-// })
+// userSchema.virtual("uploads", {
+//      ref: "upload",
+//      localField: "_id",
+//      foreignField: "UUSN"
+//  })
+
 
 userSchema.plugin(passportLocalMongoose);
 const User = mongoose.model("User", userSchema)
