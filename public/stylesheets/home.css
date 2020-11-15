@@ -1,0 +1,19 @@
+.abc {
+    min-height: 30px;
+    width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border-color: transparent;
+    background-color: #fff;
+    color: #136FA6;
+    font-size: 30px;
+    padding-bottom: 6px;
+    border-width: 0;
+}
+
+.bottomright {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    padding: 20px;
+}

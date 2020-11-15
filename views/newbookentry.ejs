@@ -1,0 +1,77 @@
+<%- include("header") -%>
+    <title>Add a new book</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/darkmode.css">
+    </head>
+
+    <body>
+        <%- include("navbar") -%>
+            <br><br>
+            <%- include("flash") -%>
+                <h1>New Book Entry</h1>
+                <p>All * labels are required fields</p>
+                <p>Filling all fields will help to display your books while filtering</p>
+                <hr>
+                <form action="/newbookentry" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="Book_name">Book Name *</label>
+                        <input type="text" name="Book_name" class="form-control" id="Book_name" placeholder="Book name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Dept">Department</label>
+                        <select name="Dept" id="Dept" class="form-control">
+                            <option disabled selected value>--Select Department--</option>
+                            <option value="CSE">CSE</option>
+                            <option value="ISE">ISE</option>
+                            <option value="ECE">ECE</option>
+                            <option value="EEE">EEE</option>
+                            <option value="EIE">EIE</option>
+                            <option value="Mechanical">Mechanical</option>
+                            <option value="Civil">Civil</option>
+                            <option value="Biotechnology">Biotechnology</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Physics">Physics</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Subject">Subject</label>
+                        <input type="text" name="Subject" class="form-control" id="Subject" placeholder="subject">
+                    </div>
+
+                    <br>
+
+
+                    <div class="form-group">
+                        <label for="image">Cover photo of image *</label>
+                        <h6>Add the cover image of book</h6>
+                        <input type="file" name="image" class="form-control-file" id="image" accept="image/*" required capture>
+                    </div>
+
+                    <br>
+
+                    <div class="form-group">
+                        <label for="Price">Price you wish to sell in Rupees</label>
+                        <input type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode==46' name="Price" class="form-control" id="Price" placeholder="Price" required title="Please enter the price">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Author">Author *</label>
+                        <input type="text" name="Author" class="form-control" id="Author" placeholder="author" required>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Edition">Edition</label>
+                        <input type="text" name="Edition" class="form-control" id="Edition" placeholder="edition">
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary btn-lg">Upload</button>
+                </form>
+                </div>
+                <br>
+                <%- include("footer") -%>
