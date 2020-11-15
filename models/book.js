@@ -8,15 +8,17 @@ var bookSchema = new mongoose.Schema({
     },
     Dept: {
         type: String,
-        trim: true
+        trim: true,
+        default: null
     },
     Subject: {
         type: String,
-        trim: true
+        trim: true,
+        default: null
     },
     Cover_page_photo: {
-        type: Buffer,
-        data: String
+        data: Buffer,
+        contentType: String
     },
     Price: {
         type: Number,
@@ -29,7 +31,8 @@ var bookSchema = new mongoose.Schema({
     },
     Edition: {
         type: String,
-        trim: true
+        trim: true,
+        default: null
     },
     UUSN: {
         id: {
@@ -40,7 +43,8 @@ var bookSchema = new mongoose.Schema({
     RUSN: {
         id: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+            ref: "User",
+            default: null
         }
     },
     Upload_date: {

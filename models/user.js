@@ -38,8 +38,7 @@ var userSchema = new mongoose.Schema({
     Ph_No: {
         type: Number,
         required: true,
-        unique: true,
-        default: 9999999999
+        unique: true
     },
     Email: {
         type: String,
@@ -67,7 +66,7 @@ var userSchema = new mongoose.Schema({
 
 // userSchema.virtual("uploads", {
 //      ref: "upload",
-//      localField: "_id",
+//      localField: "username",
 //      foreignField: "UUSN"
 //  })
 
