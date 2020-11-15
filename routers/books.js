@@ -11,7 +11,14 @@ router.get("/", (req, res) => {
 })
 
 router.get("/home", (req, res) => {
-    res.render("home")
+    Book.find({}, (err, books) => {
+        if (err) {
+            console.log(err);
+        } else {
+            //res.set("Content-Type", "image/png")
+            res.render("home", { books: books });
+        }
+    })
 });
 
 router.get("/newbookentry", isLoggedIn, (req, res) => {

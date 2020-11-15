@@ -1,6 +1,6 @@
 const express = require("express"),
     app = express(),
-    flash = require("flash"),
+    flash = require("connect-flash"),
     bodyparser = require("body-parser"),
     passport = require("passport"),
     LocalStratergy = require("passport-local"),
