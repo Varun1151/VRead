@@ -20,7 +20,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="Dept">Department</label>
+                        <label for="Dept">Department with which book is indentified</label>
                         <select name="Dept" id="Dept" class="form-control">
                             <option disabled selected value>--Select Department--</option>
                             <option value="CSE">CSE</option>
@@ -54,11 +54,6 @@
                     <br>
 
                     <div class="form-group">
-                        <label for="Price">Price you wish to sell in Rupees *</label>
-                        <input type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode==46' name="Price" class="form-control" id="Price" placeholder="Price" required title="Please enter the price">
-                    </div>
-
-                    <div class="form-group">
                         <label for="Author">Author *</label>
                         <input type="text" name="Author" class="form-control" id="Author" placeholder="author" required>
                     </div>
@@ -69,6 +64,10 @@
                         <input type="text" name="Edition" class="form-control" id="Edition" placeholder="edition">
                     </div>
 
+                    <div class="form-group">
+                        <label for="Price">Price you wish to sell in Rupees *</label>
+                        <input type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57) || event.charCode==46' name="Price" class="form-control" id="Price" placeholder="Price" required title="Please enter the price">
+                    </div>
 
                     <button type="submit" class="btn btn-primary btn-lg">Upload</button>
                 </form>

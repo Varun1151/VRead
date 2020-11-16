@@ -13,12 +13,12 @@
                 <br>
 
                 <div class="row text-center" style="display:flex; flex-wrap:wrap;">
-                    <div class="img-thumbnail">
+                    <div class="col-lg-6 col-md-12 col-sm-6 img-thumbnail">
                         <img class="img-responsive photo" src="data:<%=user.User_Photo.contentType%>;base64, 
                      <%=user.User_Photo.data.toString('base64')%>">
                         <a class="btn btn-info" href="/editprofilepic" style="margin-top: 5px;">Edit Profile Photo</a>
                     </div>
-                    <div class="userinfo img-thumbnail">
+                    <div class="col-lg-6 col-md-12 col-sm-6 userinfo img-thumbnail">
                         <h1>
                             <%=user.Name%>
                         </h1>

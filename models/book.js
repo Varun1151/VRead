@@ -35,17 +35,13 @@ var bookSchema = new mongoose.Schema({
         default: null
     },
     UUSN: {
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
     },
     RUSN: {
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            default: null
-        }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        default: null
     },
     Upload_date: {
         type: Date,

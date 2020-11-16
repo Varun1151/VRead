@@ -16,18 +16,25 @@
                     <a href="/newbookentry" class="btn btn-primary"> <button class="abc">+</button> Add a new book</a>
                 </div>
 
-                <div class="row text-center">
+                <div class="row">
                     <% books.forEach(function(book){%>
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="img-thumbnail">
                                 <h6 class="bookname">
-                                    <%=book.Book_name%>
+                                    <strong><%=book.Book_name%></strong>
+                                </h6>
+                                <h6 class="authorname">
+                                    <%=book.Author%>
                                 </h6>
                                 <hr>
                                 <img class="img-responsive" src="data:<%=book.Cover_page_photo.contentType%>;base64, 
                      <%=book.Cover_page_photo.data.toString('base64')%>">
                                 <div class="caption">
-                                    <a class="btn btn-info" href="#">More info</a>
+                                    <%if(!book.Request_status){%>
+                                        <a class="btn btn-info" href="/bookinfo/<%=book._id%>">More info</a>
+                                        <%} else {%>
+                                            <a class="btn btn-danger" href="#">Book already requested</a>
+                                            <%}%>
                                 </div>
                             </div>
                         </div>

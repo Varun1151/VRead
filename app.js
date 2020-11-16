@@ -15,8 +15,8 @@ port = process.env.PORT || 3000;
 app.set("view engine", "ejs");
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
-
-app.use(methodoverride("_method"))
+app.use(flash())
+app.use(methodoverride("_method"));
 
 app.use(require("express-session")({
     secret: "bfiu3rfohfbfui4b",
@@ -30,7 +30,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 
-app.use(flash())
+
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     res.locals.error = req.flash("error")
@@ -42,9 +42,7 @@ app.use((req, res, next) => {
 app.use("/", userRouter)
 app.use("/", booksRouter)
 
-app.get("/", (req, res) => {
-    res.send("Hello world")
-})
+
 
 app.listen(port, () => {
     console.log("VREAD started")

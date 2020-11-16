@@ -1,0 +1,77 @@
+<%- include("header") -%>
+    <title>Show</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/showpage.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/darkmode.css">
+
+    </head>
+
+    <body>
+        <%- include("navbar") -%>
+            <br>
+            <%- include("flash") -%>
+                <br>
+                <h1 class="bookname">
+                    <strong><%=book.Book_name%></strong>
+                </h1>
+
+                <div class="row">
+                    <div class="img-thumbnail">
+                        <img class="img-responsive photo" src="data:<%=book.Cover_page_photo.contentType%>;base64, 
+                         <%=book.Cover_page_photo.data.toString('base64')%>">
+                    </div>
+
+                    <div class="img-thumbnail userbookinfo">
+                        <h4><strong>Book details</strong></h4>
+                        <h4>
+                            Author :
+                            <%=book.Author%>
+                        </h4>
+                        <% if(book.Dept){%>
+                            <h4>
+                                Dept :
+                                <%=book.Dept%>
+                            </h4>
+                            <%}
+                        
+                        if(book.Subject){%>
+                                <h4>
+                                    Sub :
+                                    <%=book.Subject%>
+                                </h4>
+                                <%} if(book.Edition){%>
+                                    <h4>
+                                        <%=book.Edition%>
+                                    </h4>
+                                    <%}%>
+
+                                        <hr>
+
+                                        <h4><strong>Uploaded by</strong>
+                                        </h4>
+
+                                        <h4>USN :
+                                            <%=user.username%>
+                                        </h4>
+                                        <h4>Name :
+                                            <%=user.Name%>
+                                        </h4>
+                                        <h4>Price proposed :
+                                            <%=book.Price%>
+                                        </h4>
+                                        <div class="caption">
+                                            <% if(currentUser){ if ((book.UUSN).equals(currentUser._id)){ %>
+                                                <a class="btn btn-warning" href="/editbookinfo/<%=book._id%>">Edit info</a>
+                                                <form id="deleteform" action="/deletebookinfo/<%=book._id%>?_method=DELETE" method="POST">
+                                                    <button class='btn btn-danger'>Delete</button>
+                                                </form>
+                                                <% } else{%>
+                                                    <a class="btn btn-success" href="/requestbook/<%=book._id%>">Request</a>
+                                                    <%}
+                                            }%>
+                                        </div>
+                    </div>
+                </div>
+                </div>
+                <%- include("footer") -%>

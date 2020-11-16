@@ -33,7 +33,8 @@ var userSchema = new mongoose.Schema({
     },
     Address: {
         type: String,
-        trim: true
+        trim: true,
+        required: true
     },
     Ph_No: {
         type: Number,
