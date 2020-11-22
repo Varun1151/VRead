@@ -1,10 +1,9 @@
 <%- include("header") -%>
-    <title>Home</title>
+    <title>Uploads</title>
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="/stylesheets/home.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/darkmode.css">
-
     </head>
 
     <body>
@@ -12,13 +11,9 @@
             <br>
             <%- include("flash") -%>
                 <br>
-                <%if(currentUser){%>
-                    <div class="bottomright">
-                        <a href="/newbookentry" class="btn btn-primary"> <button class="abc">+</button> Add a new book</a>
-                    </div>
-                    <%}%>
-
-
+                <%if(books.length==0){%>
+                    <h1>You do not have any requests currently</h1>
+                    <%}else{%>
                         <div class="row">
                             <% books.forEach(function(book){%>
                                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -31,18 +26,15 @@
                                         </h6>
                                         <hr>
                                         <img class="img-responsive" src="data:<%=book.Cover_page_photo.contentType%>;base64, 
-                     <%=book.Cover_page_photo.data.toString('base64')%>">
-                                        <div class="caption">
-                                            <%if(!book.Request_status){%>
-                                                <a class="btn btn-info" href="/bookinfo/<%=book._id%>">More info</a>
-                                                <%} else {%>
-                                                    <a class="btn btn-danger" href="#">Book already requested</a>
-                                                    <%}%>
-                                        </div>
+                 <%=book.Cover_page_photo.data.toString('base64')%>">
+                                        <hr>
+                                        <h4 style="color: black;">Your request has not yet been acknowledged by the seller</h4>
                                     </div>
                                 </div>
                                 <% });%>
                         </div>
+                        <%}%>
+                            <a href="/profile" class="btn btn-primary" style="margin-top: 10px;">Back</a>
 
-                        </div>
-                        <%- include("footer") -%>
+                            </div>
+                            <%- include("footer") -%>

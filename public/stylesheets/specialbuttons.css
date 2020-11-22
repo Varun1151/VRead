@@ -1,0 +1,45 @@
+.transparentbtn {
+    background: transparent;
+    border-color: transparent;
+    float: right;
+}
+
+#deleteyes {
+    color: red;
+}
+
+#requestyes {
+    color: green;
+}
+
+#rejectyes {
+    color: red;
+}
+
+#acknowledgeyes {
+    color: blue;
+}
+
+#feedbackyes {
+    background-color: green;
+    color: white;
+}
+
+.extras {
+    width: max-content;
+    padding: 20px;
+    size: 2rem;
+    box-shadow: 3px 8px 8px 2px #888888;
+    position: fixed;
+    display: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* z-index: 1; */
+    margin: 5px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    border-width: 100%;
+    transition: ease-in;
+    background-color: white;
+}

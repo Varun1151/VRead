@@ -1,10 +1,11 @@
 const express = require("express")
 const router = new express.Router()
-const passport = require("passport")
+    // const passport = require("passport")
 const upload = require("../others/multer")
 const { isLoggedIn, checkbookownership } = require("../middleware/middleware")
 const User = require("../models/user")
 const Book = require("../models/book")
+const Feedback = require("../models/feedback")
 
 router.get("/", (req, res) => {
     res.redirect("/home")
@@ -15,7 +16,6 @@ router.get("/home", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            //res.set("Content-Type", "image/png")
             res.render("home", { books: books });
         }
     })
@@ -62,6 +62,11 @@ router.post("/newbookentry", isLoggedIn, upload.single("image"), async(req, res)
 
     try {
         await newbook.save()
+            // User.findByIdAndUpdate(req.user._id, { $inc: { No_of_uploads: 1 } }, (err, data) => {
+            //     if (err) {
+            //         console.log(err)
+            //     }
+            // })
         req.flash("success", "Book uploaded")
         res.redirect("/home")
     } catch (e) {
@@ -72,19 +77,58 @@ router.post("/newbookentry", isLoggedIn, upload.single("image"), async(req, res)
     req.flash("error", error.message)
 })
 
-router.get("/requestbook/:id", checkbookownership, (req, res) => {
+router.get("/requestbook/:id", isLoggedIn, (req, res) => {
     Book.findByIdAndUpdate(req.params.id, { RUSN: req.user._id, Request_status: true }, (err, updatedBook) => {
         if (err) {
             console.log(err)
             res.redirect("back")
         } else {
+            // User.findByIdAndUpdate(req.user._id, { $inc: { No_of_request: 1 } }, (err, data) => {
+            //     if (err) {
+            //         console.log(err)
+            //     }
+            // })
             res.redirect("/home")
         }
     })
 })
 
+router.get("/positiveacknowledgement/:id", (req, res) => {
+
+    Book.findByIdAndRemove(req.params.id, (err) => {
+        if (err) {
+            res.redirect("/youruploads")
+        } else {
+            req.flash("success", "Acknowledgement successfull. Details of receiver will be sent ot your mail. Do check the spam if not in inbox")
+            res.redirect("/youruploads")
+        };
+    })
+})
+
+router.get("/negativeacknowledgement/:id", (req, res) => {
+    Book.findByIdAndUpdate(req.params.id, { RUSN: null, Request_status: false }, (err, book) => {
+        res.redirect("/youruploads")
+    })
+})
+
+router.post("/feedback", isLoggedIn, async(req, res) => {
+    const feedback = new Feedback({
+        USN: req.user._id,
+        Book_id: req.body.bookid,
+        Feedback_msg: req.body.feedbacktext
+    })
+    try {
+        await feedback.save()
+        req.flash("success", "Thank you for the feedback. The admins will look into your feedback")
+        res.redirect("back")
+    } catch (e) {
+        req.flash("error", "Couldn't save the feedback. Try again")
+        res.redirect("back")
+    }
+})
+
 router.get("/editbookinfo/:id", checkbookownership, (req, res) => {
-    Book.findById(req.params.id, (err, book) => {
+    Book.findByIdAndUpdate(req.params.id, { RUSN: req.user._id, Request_status: true }, (err, book) => {
         if (err) {
             console.log(err)
             res.redirect("back")
@@ -108,6 +152,11 @@ router.put("/editbookinfo/:id", checkbookownership, (req, res) => {
 });
 
 router.delete("/deletebookinfo/:id", checkbookownership, (req, res) => {
+    // User.findByIdAndUpdate(req.user._id, { $inc: { No_of_uploads: -1 } }, (err, data) => {
+    //     if (err) {
+    //         console.log(err)
+    //     }
+    // });
     Book.findByIdAndRemove(req.params.id, (err) => {
         if (err) {
             req.flash("error", err.message);

@@ -1,0 +1,66 @@
+<%- include("header") -%>
+    <title>Uploads</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/profilebook.css">
+    <link rel="stylesheet" href="/stylesheets/home.css">
+    <link rel="stylesheet" href="/stylesheets/specialbuttons.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/darkmode.css">
+
+
+    </head>
+
+    <body>
+        <%- include("navbar") -%>
+            <br>
+            <%- include("flash") -%>
+                <br>
+
+                <%if(books.length==0){%>
+                    <h1>You have no uploads currenctly</h1>
+                    <%}else{%>
+                        <div class="row">
+                            <% books.forEach(function(book){%>
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="img-thumbnail">
+                                        <h6 class="bookname">
+                                            <strong><%=book.Book_name%></strong>
+                                        </h6>
+                                        <h6 class="authorname">
+                                            <%=book.Author%>
+                                        </h6>
+                                        <hr>
+                                        <img class="img-responsive" src="data:<%=book.Cover_page_photo.contentType%>;base64, 
+                     <%=book.Cover_page_photo.data.toString('base64')%>">
+                                        <hr>
+                                        <div class="caption">
+                                            <%if(book.Request_status){%>
+                                                <form style="display: none;" id="acknowledgeform" action="/positiveacknowledgement/<%=book._id%>" method="GET"></form>
+                                                <form style="display: none;" id="rejectform" action="/negativeacknowledgement/<%=book._id%>" method="GET"></form>
+                                                <a href="#" class="btn btn-info" id="acknowledgebtn">Acknowledge</a>
+                                                <a href="#" class="btn btn-danger" id="rejectbtn">Reject</a>
+                                                <div id="acknowledgeconfirm" class="extras">
+                                                    <p style="color: black;">Are you sure</p>
+                                                    <button class="transparentbtn" id="acknowledgeno">cancel</button>
+                                                    <button id="acknowledgeyes" class="transparentbtn">Yes</button>
+                                                </div>
+                                                <div id="rejectconfirm" class="extras">
+                                                    <p style="color: black;">Are you sure?</p>
+                                                    <button class="transparentbtn" id="rejectno">cancel</button>
+                                                    <button id="rejectyes" class="transparentbtn">Yes</button>
+                                                </div>
+                                                <%}else{%>
+                                                    <h5 style="color: black;">No one has requested this book yet</h5>
+                                                    <%}%>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <% });%>
+                        </div>
+                        <%}%>
+                            <a href="/profile" class="btn btn-primary" style="margin-top: 10px;">Back</a>
+
+                            </div>
+                            <script src="/scripts/show.js"></script>
+                            <%- include("footer") -%>

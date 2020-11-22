@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="#">VRead</a>
+        <a class="navbar-brand" href="#"><i class="fas fa-book"></i>  VRead</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent1" aria- controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     		<span class="navbar-toggler-icon"></span>
   		</button>
@@ -10,7 +10,7 @@
 
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/home">Home</a>
+                    <a class="nav-link" href="/home"><i class="fa fa-fw fa-home"></i></a>
                 </li>
 
 
@@ -31,14 +31,14 @@
                                     <%=currentUser.username %>
                                 </a>
 
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="/profile">Profile</a>
-                                    <a class="dropdown-item" href="/logout"> Logout</a>
+                                <div class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="/profile" style="color: white;"><i class="fas fa-user"></i> Profile</a>
+                                    <a class="dropdown-item" href="/logout" style="color: white;"> <i class="fas fa-sign-out-alt"></i> Logout</a>
                                 </div>
                             </div>
                             <%}%>
                                 <li class="nav-item">
-                                    <a class="nav-link active dark-mode-toggle" id="dark-mode-toggle" href="#">Toggle mode</a>
+                                    <a class="nav-link active dark-mode-toggle" id="dark-mode-toggle" href="#" style="margin-left: 10px;" ; "> Toggle mode</a>
                                 </li>
                 </ul>
             </form>

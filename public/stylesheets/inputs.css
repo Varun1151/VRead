@@ -1,0 +1,19 @@
+input[type="text"] {
+    padding: 20px 10px;
+    line-height: 28px;
+}
+
+input[type="password"] {
+    padding: 20px 10px;
+    line-height: 28px;
+}
+
+input[type="number"] {
+    padding: 20px 10px;
+    line-height: 28px;
+}
+
+input[type="email"] {
+    padding: 20px 10px;
+    line-height: 28px;
+}

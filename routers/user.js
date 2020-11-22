@@ -3,6 +3,8 @@ const router = new express.Router()
 const passport = require("passport")
 const User = require("../models/user")
 const upload = require("../others/multer")
+const { isLoggedIn } = require("../middleware/middleware")
+const Book = require("../models/book")
 
 
 router.get("/login", (req, res) => {
@@ -12,8 +14,7 @@ router.get("/login", (req, res) => {
 router.post("/login", passport.authenticate("local", {
     successRedirect: "/home",
     failureRedirect: "/login",
-    failureFlash: true,
-    successFlash: 'Logged in successfully'
+    failureFlash: true
 }), (req, res) => {
     //res.send("iochrichrilo")
 });
@@ -53,12 +54,12 @@ router.post("/signup", upload.single('image'), (req, res) => {
     });
 });
 
-router.get("/profile", (req, res) => {
+router.get("/profile", isLoggedIn, (req, res) => {
     res.render("profile", { user: req.user });
 })
 
-router.get("/editprofileinfo", (req, res) => {
-    res.render("editprofileinfo", { user: req.user })
+router.get("/editprofileinfo", isLoggedIn, (req, res) => {
+    res.render("editprofileinfo", isLoggedIn, { user: req.user })
 })
 
 router.put("/editprofileinfo", (req, res) => {
@@ -73,7 +74,7 @@ router.put("/editprofileinfo", (req, res) => {
     })
 });
 
-router.get("/editprofilepic", (req, res) => {
+router.get("/editprofilepic", isLoggedIn, (req, res) => {
     res.render("editprofilepic", { user: req.user })
 })
 
@@ -94,6 +95,27 @@ router.put("/editprofilepic", upload.single("image"), (req, res) => {
         }
     })
 });
+
+router.get("/youruploads", isLoggedIn, (req, res) => {
+    Book.find({ UUSN: req.user._id }, (err, books) => {
+        if (err) {
+            res.redirect("back")
+        } else {
+            res.render("youruploads", { books: books })
+        }
+    })
+})
+
+router.get("/yourrequests", isLoggedIn, (req, res) => {
+
+    Book.find({ RUSN: req.user._id }, (err, books) => {
+        if (err) {
+            res.redirect("back")
+        } else {
+            res.render("yourrequests", { books: books })
+        }
+    })
+})
 
 router.get("/logout", (req, res) => {
     req.logout();

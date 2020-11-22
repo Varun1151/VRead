@@ -52,24 +52,20 @@ var userSchema = new mongoose.Schema({
                 throw new Error("Email is invalid")
             }
         }
-    },
-    No_of_request: {
-        type: Number,
-        default: 0
-    },
-    No_of_uploads: {
-        type: Number,
-        default: 0
     }
+    // No_of_request: {
+    //     type: Number,
+    //     default: 0
+    // },
+    // No_of_uploads: {
+    //     type: Number,
+    //     default: 0
+    // }
 }, {
     timestamps: true
 })
 
-// userSchema.virtual("uploads", {
-//      ref: "upload",
-//      localField: "username",
-//      foreignField: "UUSN"
-//  })
+
 
 
 userSchema.plugin(passportLocalMongoose);

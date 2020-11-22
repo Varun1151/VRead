@@ -1,26 +1,12 @@
 .photo {
-    width: 400px;
-    height: 400px;
-}
-
-.img-thumbnail img {
     width: 100%;
-    height: 350px;
-    padding-bottom: 5px;
-    padding-top: 5px;
+    object-fit: cover;
+    height: 460px;
 }
 
 .img-thumbnail {
     width: 410px;
     height: 460px;
-    margin: 5px;
-}
-
-.img-thumbnail .caption {
-    padding: 9px;
-    position: absolute;
-    bottom: 5px;
-    right: 20px;
 }
 
 .userbookinfo {
@@ -28,6 +14,9 @@
     word-wrap: break-word;
 }
 
-#deleteform {
-    display: inline;
+.userbookinfo .caption {
+    padding: 9px;
+    position: absolute;
+    bottom: 5px;
+    right: 20px;
 }

@@ -1,0 +1,41 @@
+.navbar a:hover,
+.dropdown:hover .dropbtn {
+    background-color: #9fa2a5;
+    color: white;
+}
+
+.fa-user,
+.fa-user-plus {
+    color: white;
+    margin-left: 8px;
+}
+
+.fa {
+    color: white;
+    margin-left: 8px;
+}
+
+.navbar-brand {
+    background-color: blue;
+    padding: 5px;
+    border-radius: 5%;
+}
+
+.navbar a {
+    float: left;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.dropdown:hover .dropdown-item {
+    display: block;
+}
+
+.dropdown-item {
+    color: white;
+}
+
+.nav-item a {
+    color: white;
+}
