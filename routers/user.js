@@ -6,6 +6,13 @@ const upload = require("../others/multer")
 const { isLoggedIn } = require("../middleware/middleware")
 const Book = require("../models/book")
 
+function titlecase(str) {
+    var sentence = str.toLowerCase().split(" ");
+    for (var i = 0; i < sentence.length; i++) {
+        sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+    }
+    return sentence.join(" ")
+}
 
 router.get("/login", (req, res) => {
     res.render("login")
@@ -33,7 +40,7 @@ router.post("/signup", upload.single('image'), (req, res) => {
 
     const newuser = new User({
         username: req.body.username,
-        Name: req.body.name,
+        Name: titlecase(req.body.name),
         User_Photo: req.body.image,
         Address: req.body.addr,
         Ph_No: req.body.phno,
@@ -43,7 +50,6 @@ router.post("/signup", upload.single('image'), (req, res) => {
 
     User.register(newuser, req.body.password, (err, user) => {
         if (err) {
-            console.log(err.message)
             req.flash('error', err.message);
             res.redirect("back")
         }
@@ -97,7 +103,7 @@ router.put("/editprofilepic", upload.single("image"), (req, res) => {
 });
 
 router.get("/youruploads", isLoggedIn, (req, res) => {
-    Book.find({ UUSN: req.user._id }, (err, books) => {
+    Book.find({ UUSN: req.user.username }, (err, books) => {
         if (err) {
             res.redirect("back")
         } else {
@@ -108,7 +114,7 @@ router.get("/youruploads", isLoggedIn, (req, res) => {
 
 router.get("/yourrequests", isLoggedIn, (req, res) => {
 
-    Book.find({ RUSN: req.user._id }, (err, books) => {
+    Book.find({ RUSN: req.user.username }, (err, books) => {
         if (err) {
             res.redirect("back")
         } else {

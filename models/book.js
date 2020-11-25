@@ -35,11 +35,12 @@ var bookSchema = new mongoose.Schema({
         default: null
     },
     UUSN: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        type: mongoose.Schema.Types.String,
+        ref: "User",
+        required: true
     },
     RUSN: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.String,
         ref: "User",
         default: null
     },

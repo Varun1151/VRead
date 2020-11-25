@@ -16,7 +16,7 @@ function checkbookownership(req, res, next) {
             if (err) {
                 res.redirect("back");
             } else {
-                if ((book.UUSN).equals(req.user._id)) {
+                if (book.UUSN === req.user.username) {
                     next();
                 } else {
                     req.flash("error", "You don't have permission")

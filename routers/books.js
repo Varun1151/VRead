@@ -7,17 +7,43 @@ const User = require("../models/user")
 const Book = require("../models/book")
 const Feedback = require("../models/feedback")
 
+function titlecase(str) {
+    var sentence = str.toLowerCase().split(" ");
+    for (var i = 0; i < sentence.length; i++) {
+        sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+    }
+    return sentence.join(" ")
+}
+
 router.get("/", (req, res) => {
     res.redirect("/home")
 })
 
 router.get("/home", (req, res) => {
-    Book.find({}, (err, books) => {
+    var query = {}
+    if (req.query.bookname) {
+        query.Book_name = titlecase(req.query.bookname)
+    }
+    if (req.query.Author) {
+        query.Author = titlecase(req.query.Author)
+    }
+    if (req.query.Dept) {
+        query.Dept = req.query.Dept
+    }
+    if (req.query.Edition) {
+        query.Edition = req.query.Edition
+    }
+    if (req.query.Subject) {
+        query.Subject = titlecase(req.query.Subject)
+    }
+    Book.find(query, (err, books) => {
         if (err) {
             console.log(err);
         } else {
-            res.render("home", { books: books });
+            res.render("home", { books: books, query: query });
         }
+    }).sort({
+        "_id": -1
     })
 });
 
@@ -27,7 +53,7 @@ router.get("/bookinfo/:id", (req, res) => {
             req.flash("error", err.message)
             res.redirect("back")
         } else {
-            User.findById(book.UUSN, (err, user) => {
+            User.find({ username: book.UUSN }, (err, user) => {
                 if (err) {
                     req.flash("error", err.message)
                     res.redirect("back")
@@ -50,23 +76,23 @@ router.post("/newbookentry", isLoggedIn, upload.single("image"), async(req, res)
     }
 
     const newbook = new Book({
-        Book_name: req.body.bookname,
+        Book_name: titlecase(req.body.bookname),
         Dept: req.body.Dept,
-        Subject: req.body.Subject,
+        Subject: titlecase(req.body.Subject),
         Cover_page_photo: req.body.image,
         Price: req.body.Price,
-        Author: req.body.Author,
+        Author: titlecase(req.body.Author),
         Edition: req.body.Edition,
-        UUSN: req.user._id
+        UUSN: req.user.username
     });
 
     try {
         await newbook.save()
-            // User.findByIdAndUpdate(req.user._id, { $inc: { No_of_uploads: 1 } }, (err, data) => {
-            //     if (err) {
-            //         console.log(err)
-            //     }
-            // })
+        User.findByIdAndUpdate(req.user._id, { $inc: { No_of_uploads: 1 } }, (err, data) => {
+            if (err) {
+                console.log(err)
+            }
+        })
         req.flash("success", "Book uploaded")
         res.redirect("/home")
     } catch (e) {
@@ -78,24 +104,39 @@ router.post("/newbookentry", isLoggedIn, upload.single("image"), async(req, res)
 })
 
 router.get("/requestbook/:id", isLoggedIn, (req, res) => {
-    Book.findByIdAndUpdate(req.params.id, { RUSN: req.user._id, Request_status: true }, (err, updatedBook) => {
+    Book.findByIdAndUpdate(req.params.id, { RUSN: req.user.username, Request_status: true }, (err, updatedBook) => {
         if (err) {
             console.log(err)
             res.redirect("back")
         } else {
-            // User.findByIdAndUpdate(req.user._id, { $inc: { No_of_request: 1 } }, (err, data) => {
-            //     if (err) {
-            //         console.log(err)
-            //     }
-            // })
+            User.findByIdAndUpdate(req.user._id, { $inc: { No_of_request: 1 } }, (err, data) => {
+                if (err) {
+                    console.log(err)
+                }
+            })
             res.redirect("/home")
         }
     })
 })
 
 router.get("/positiveacknowledgement/:id", (req, res) => {
-
-    Book.findByIdAndRemove(req.params.id, (err) => {
+    const bookid = req.params.id
+    Book.findById(bookid, (err, book) => {
+        if (!err) {
+            User.findOneAndUpdate({ username: book.UUSN }, { $inc: { No_of_uploads: -1 } }, (err, user) => {
+                if (err) {
+                    console.log(err.message)
+                }
+            })
+            User.findOneAndUpdate({ username: book.RUSN }, { $inc: { No_of_request: -1 } }, (err, user) => {
+                if (err) {
+                    console.log(err.message)
+                }
+            })
+        }
+    })
+    Feedback.deleteMany({ Book_id: bookid });
+    Book.findByIdAndRemove(bookid, (err) => {
         if (err) {
             res.redirect("/youruploads")
         } else {
@@ -106,14 +147,29 @@ router.get("/positiveacknowledgement/:id", (req, res) => {
 })
 
 router.get("/negativeacknowledgement/:id", (req, res) => {
-    Book.findByIdAndUpdate(req.params.id, { RUSN: null, Request_status: false }, (err, book) => {
-        res.redirect("/youruploads")
+    Book.findById(req.params.id, (err, book) => {
+        if (!err) {
+            User.findOneAndUpdate({ username: book.RUSN }, { $inc: { No_of_request: -1 } }, (err, user) => {
+                if (err) {
+                    console.log(err.message)
+                }
+            })
+        }
     })
+    Book.findByIdAndUpdate(req.params.id, { RUSN: null, Request_status: false }, (err, book) => {
+        if (err) {
+            console.log(err.message)
+            res.redirect("/youruploads")
+        } else {
+            res.redirect("/youruploads")
+        }
+    });
 })
+
 
 router.post("/feedback", isLoggedIn, async(req, res) => {
     const feedback = new Feedback({
-        USN: req.user._id,
+        USN: req.user.username,
         Book_id: req.body.bookid,
         Feedback_msg: req.body.feedbacktext
     })
@@ -128,7 +184,7 @@ router.post("/feedback", isLoggedIn, async(req, res) => {
 })
 
 router.get("/editbookinfo/:id", checkbookownership, (req, res) => {
-    Book.findByIdAndUpdate(req.params.id, { RUSN: req.user._id, Request_status: true }, (err, book) => {
+    Book.findById(req.params.id, (err, book) => {
         if (err) {
             console.log(err)
             res.redirect("back")
@@ -152,11 +208,12 @@ router.put("/editbookinfo/:id", checkbookownership, (req, res) => {
 });
 
 router.delete("/deletebookinfo/:id", checkbookownership, (req, res) => {
-    // User.findByIdAndUpdate(req.user._id, { $inc: { No_of_uploads: -1 } }, (err, data) => {
-    //     if (err) {
-    //         console.log(err)
-    //     }
-    // });
+    User.findByIdAndUpdate(req.user._id, { $inc: { No_of_uploads: -1 } }, (err, data) => {
+        if (err) {
+            console.log(err)
+        }
+    });
+    Feedback.deleteMany({ Book_id: req.params.id });
     Book.findByIdAndRemove(req.params.id, (err) => {
         if (err) {
             req.flash("error", err.message);

@@ -18,7 +18,53 @@
                     </div>
                     <%}%>
 
+                        <div class="filterdiv">
+                            <h4 style="color: black">Filter by :</h4>
+                            <form action="#" id="filterform">
+                                <div class="form-group">
+                                    <label for="bookname">Book Name</label>
+                                    <input type="text" name="bookname" class="form-control" id="bookname" placeholder="Book name" value="<%=query.Book_name%>">
+                                </div>
 
+                                <div class="form-group">
+                                    <label for="Dept">Department</label>
+                                    <select name="Dept" id="Dept" class="form-control">
+                                        <option disabled selected value>--Select Department--</option>
+                                        <option value="CSE">CSE</option>
+                                        <option value="ISE">ISE</option>
+                                        <option value="ECE">ECE</option>
+                                        <option value="EEE">EEE</option>
+                                        <option value="EIE">EIE</option>
+                                        <option value="Mechanical">Mechanical</option>
+                                        <option value="Civil">Civil</option>
+                                        <option value="Biotechnology">Biotechnology</option>
+                                        <option value="Mathematics">Mathematics</option>
+                                        <option value="Physics">Physics</option>
+                                    </select>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="Subject">Subject</label>
+                                    <input type="text" name="Subject" class="form-control" id="Subject" placeholder="subject" value="<%=query.Subject%>">
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="Author">Author </label>
+                                    <input type="text" name="Author" class="form-control" id="Author" placeholder="author" value="<%=query.Author%>">
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="Edition">Edition</label>
+                                    <input type="text" name="Edition" class="form-control" id="Edition" placeholder="edition" value="<%=query.Edition%>">
+                                </div>
+
+                            </form>
+                            <button class="btn btn-primary" id="filterbtn"><i class="fas fa-filter" style="color: white;"></i> Filter</button>
+                            <a href="/home" class="btn btn-primary">Clear Filters</a>
+                        </div>
                         <div class="row">
                             <% books.forEach(function(book){%>
                                 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -45,4 +91,5 @@
                         </div>
 
                         </div>
+                        <script src="/scripts/home.js"></script>
                         <%- include("footer") -%>

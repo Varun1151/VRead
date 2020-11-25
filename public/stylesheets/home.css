@@ -54,3 +54,26 @@
 .authorname {
     color: black;
 }
+
+.form-group {
+    color: black;
+    float: left;
+}
+
+form {
+    display: inline-flex;
+}
+
+.filterdiv {
+    background-color: skyblue;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+form button {
+    position: relative;
+    bottom: 0px;
+    right: 0px;
+    float: right;
+    margin: 5px;
+}

@@ -1,7 +1,12 @@
 window.addEventListener("load", function() {
 
+    $("#editbtn").click(() => {
+        $("#deleteconfirm").css("display", "none")
+        $("#editconfirm").css("display", "block")
+    })
 
     $("#deletebtn").click(() => {
+        $("#editconfirm").css("display", "none")
         $("#deleteconfirm").css("display", "block")
     })
 
@@ -37,6 +42,9 @@ window.addEventListener("load", function() {
         $("#feedbackconfirm").css("display", "none")
     })
 
+    $("#editno").click(() => {
+        $("#editconfirm").css("display", "none")
+    })
 
     $("#acknowledgebtn").click(() => {
         $("#rejectconfirm").css("display", "none")
