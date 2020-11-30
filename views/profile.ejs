@@ -3,7 +3,8 @@
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/profile.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/darkmode.css">
-    <style>
+    <link rel="stylesheet" href="/stylesheets/specialbuttons.css">
+    <!-- <style>
         .bottomright {
             position: fixed;
             bottom: 0px;
@@ -24,7 +25,7 @@
             padding-bottom: 6px;
             border-width: 0;
         }
-    </style>
+    </style> -->
     </head>
 
     <body>
@@ -32,18 +33,34 @@
             <br>
             <%- include("flash") -%>
                 <br>
-                <div class="bottomright">
+                <!-- <div class="bottomright">
                     <a href="/newbookentry" class="btn btn-primary"> <button class="abc">+</button> Add a new book</a>
-                </div>
+                </div> -->
 
 
-                <div class="row text-center" style="display:flex; flex-wrap:wrap;">
-                    <div class="col-lg-6 col-md-12 col-sm-6 img-thumbnail">
+                <div class="row" style="display:flex; flex-wrap:wrap;">
+                    <div class="col-lg-5 col-md-12 col-sm-12 img-thumbnail userprofilepic">
                         <img class="img-responsive photo" src="data:<%=user.User_Photo.contentType%>;base64, 
                      <%=user.User_Photo.data.toString('base64')%>">
-                        <a class="btn btn-info" href="/editprofilepic" style="margin-top: 5px;">Edit Profile Photo</a>
+                        <div class="caption">
+                            <button class="btn btn-info" id="editpicbtn" style="margin-top: 5px;">Edit Profile Photo</button>
+                        </div>
+                        <div class="extras" id="editpicconfirm">
+                            <div class="img-thumbnail">
+                                <img class="img-responsive photo" src="data:<%=user.User_Photo.contentType%>;base64, 
+                             <%=user.User_Photo.data.toString('base64')%>">
+                                <h5 style="color: black;">Current profile pic</h5>
+                            </div>
+
+                            <form action="/editprofilepic?_method=PUT" method="POST" enctype="multipart/form-data">
+                                <input type="file" name="image" class="form-control-file" id="image" accept="image/*" required style="color: black;">
+                                <button class="btn btn-primary" id="editpicyes" type="submit" style="float: right;">Set</button>
+                            </form>
+                            <button id="editpicno" class="btn btn-secondary" style="margin-right: 5px; float:right;">Cancel</button>
+
+                        </div>
                     </div>
-                    <div class="col-lg-6 col-md-12 col-sm-6 userinfo img-thumbnail">
+                    <div class="col-lg-5 col-md-12 col-sm-12 userinfo img-thumbnail">
                         <h1>
                             <%=user.Name%>
                         </h1>
@@ -59,12 +76,52 @@
                         <h3>Email :
                             <%=user.Email%>
                         </h3>
-                        <br>
-                        <a class="btn btn-warning" href="/editprofileinfo">Edit info</a>
+                        <div class="caption">
+                            <button class="btn btn-warning" id="editinfobtn">Edit info</button>
+                            <!-- <button class='btn btn-danger' style="display: inline;" id="deletebtn">Delete</button> -->
+                            <!-- <form class="extras" id="deleteform" action="/deleteuser" method="GET"></form> -->
+
+                            <!-- <a class="btn btn-warning" href="/editprofileinfo">Edit info</a> -->
+                            <div class="extras" id="editinfoconfirm">
+                                <form action="/editprofileinfo?_method=PUT" method="POST">
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input type="text" name="name" class="form-control" id="name" value="<%= user.Name%>" placeholder="Name (max 20 charcaters)" maxlength=20 required title="Exceeded 20 characters">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="addr">Address</label>
+                                        <input type="text" name="addr" class="form-control" id="addr" placeholder="address" value="<%= user.Address%>">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="phno">Phone Number</label>
+                                        <input type="tel" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="phno" class="form-control" id="phno" placeholder="Phno" pattern="[6-9]{1}[0-9]{9}" required title="Not a mobile number" value="<%= user.Ph_No%>">
+                                    </div>
+
+                                    <div class="form-group ">
+                                        <label for="email ">Email</label>
+                                        <input type="email " name="email" class="form-control " id="email " placeholder="email " required title="Enter a valid email" value="<%= user.Email%>">
+                                    </div>
+                                    <button class="btn btn-primary" id="editinfoyes" style="float: right;" type="submit">Edit</button>
+                                </form>
+                                <button id="editinfono" class="btn btn-secondary" style="margin-right: 5px; float:right;">Cancel</button>
+
+                            </div>
+
+                            <div id="deleteconfirm" class="extras">
+                                <p>Do you want to delete this item?</p>
+                                <button class="transparentbtn" id="deleteno">No</button>
+                                <button id="deleteyes" class="transparentbtn">Yes</button>
+                            </div>
+
+                        </div>
+
                     </div>
                 </div>
 
                 <a href="/youruploads" class="btn btn-primary"><i class="fas fa-arrow-circle-up"></i>  Your Current Uploads(<%=user.No_of_uploads%>)</a>
                 <a href="/yourrequests" class="btn btn-primary">Your Current Requests(<%=user.No_of_request%>)</a>
                 </div>
+                <script src="/scripts/profile.js"></script>
                 <%- include("footer") -%>

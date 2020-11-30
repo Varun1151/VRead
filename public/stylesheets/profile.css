@@ -12,3 +12,17 @@
 .userinfo {
     color: black;
 }
+
+.userinfo .caption {
+    padding: 9px;
+    position: absolute;
+    bottom: 5px;
+    right: 20px;
+}
+
+.userprofilepic .caption {
+    padding: 9px;
+    position: absolute;
+    bottom: 5px;
+    right: 20px;
+}

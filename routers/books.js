@@ -8,11 +8,15 @@ const Book = require("../models/book")
 const Feedback = require("../models/feedback")
 
 function titlecase(str) {
-    var sentence = str.toLowerCase().split(" ");
-    for (var i = 0; i < sentence.length; i++) {
-        sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+    if (str.length > 0) {
+        var sentence = str.toLowerCase().split(" ");
+        for (var i = 0; i < sentence.length; i++) {
+            sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+        }
+        return sentence.join(" ")
+    } else {
+        return str
     }
-    return sentence.join(" ")
 }
 
 router.get("/", (req, res) => {
@@ -88,7 +92,7 @@ router.post("/newbookentry", isLoggedIn, upload.single("image"), async(req, res)
 
     try {
         await newbook.save()
-        User.findByIdAndUpdate(req.user._id, { $inc: { No_of_uploads: 1 } }, (err, data) => {
+        await User.findByIdAndUpdate(req.user._id, { $inc: { No_of_uploads: 1 } }, (err, data) => {
             if (err) {
                 console.log(err)
             }
@@ -119,7 +123,7 @@ router.get("/requestbook/:id", isLoggedIn, (req, res) => {
     })
 })
 
-router.get("/positiveacknowledgement/:id", (req, res) => {
+router.get("/positiveacknowledgement/:id", checkbookownership, (req, res) => {
     const bookid = req.params.id
     Book.findById(bookid, (err, book) => {
         if (!err) {
@@ -146,7 +150,7 @@ router.get("/positiveacknowledgement/:id", (req, res) => {
     })
 })
 
-router.get("/negativeacknowledgement/:id", (req, res) => {
+router.get("/negativeacknowledgement/:id", checkbookownership, (req, res) => {
     Book.findById(req.params.id, (err, book) => {
         if (!err) {
             User.findOneAndUpdate({ username: book.RUSN }, { $inc: { No_of_request: -1 } }, (err, user) => {
@@ -183,20 +187,27 @@ router.post("/feedback", isLoggedIn, async(req, res) => {
     }
 })
 
-router.get("/editbookinfo/:id", checkbookownership, (req, res) => {
-    Book.findById(req.params.id, (err, book) => {
-        if (err) {
-            console.log(err)
-            res.redirect("back")
-        } else {
-            res.render("editbookinfo", { book: book })
-        }
-    })
-})
+// router.get("/editbookinfo/:id", checkbookownership, (req, res) => {
+//     Book.findById(req.params.id, (err, book) => {
+//         if (err) {
+//             console.log(err)
+//             res.redirect("back")
+//         } else {
+//             res.render("editbookinfo", { book: book })
+//         }
+//     })
+// })
 
 router.put("/editbookinfo/:id", checkbookownership, (req, res) => {
     var id = req.params.id
-    Book.findByIdAndUpdate(id, req.body.editedbook, (err, updatedBook) => {
+    const editedbook = {
+        Dept: req.body.Dept,
+        Subject: titlecase(req.body.Subject),
+        Price: req.body.Price,
+        Author: titlecase(req.body.Author),
+        Edition: req.body.Edition,
+    }
+    Book.findByIdAndUpdate(id, editedbook, (err, updatedBook) => {
         if (err) {
             req.flash("error", err.message);
             res.redirect("/bookinfo/" + id);
