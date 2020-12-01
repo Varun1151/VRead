@@ -1,11 +1,11 @@
 const express = require("express")
 const router = new express.Router()
-    // const passport = require("passport")
 const upload = require("../others/multer")
 const { isLoggedIn, checkbookownership } = require("../middleware/middleware")
 const User = require("../models/user")
 const Book = require("../models/book")
 const Feedback = require("../models/feedback")
+    // const transporter = require("../others/nodemailer")
 
 function titlecase(str) {
     if (str.length > 0) {
@@ -40,6 +40,7 @@ router.get("/home", (req, res) => {
     if (req.query.Subject) {
         query.Subject = titlecase(req.query.Subject)
     }
+    query.Request_status = false
     Book.find(query, (err, books) => {
         if (err) {
             console.log(err);
@@ -57,7 +58,7 @@ router.get("/bookinfo/:id", (req, res) => {
             req.flash("error", err.message)
             res.redirect("back")
         } else {
-            User.find({ username: book.UUSN }, (err, user) => {
+            User.findOne({ username: book.UUSN }, (err, user) => {
                 if (err) {
                     req.flash("error", err.message)
                     res.redirect("back")
@@ -125,18 +126,39 @@ router.get("/requestbook/:id", isLoggedIn, (req, res) => {
 
 router.get("/positiveacknowledgement/:id", checkbookownership, (req, res) => {
     const bookid = req.params.id
+    var seller, buyer;
     Book.findById(bookid, (err, book) => {
         if (!err) {
+
             User.findOneAndUpdate({ username: book.UUSN }, { $inc: { No_of_uploads: -1 } }, (err, user) => {
                 if (err) {
                     console.log(err.message)
                 }
+                seller = user.Email
             })
+
             User.findOneAndUpdate({ username: book.RUSN }, { $inc: { No_of_request: -1 } }, (err, user) => {
                 if (err) {
                     console.log(err.message)
                 }
+                buyer = user.Email
             })
+
+            // var mailOptions = {
+            //     // from: 'youremail@gmail.com',
+            //     from: 'youremail@gmail.com',
+            //     to: seller,buyer
+            //     subject: 'VRead Contact share',
+            //     text: 'Thank you for using our service'
+            // };
+
+            // transporter.sendMail(mailOptions, function(error, info) {
+            //     if (error) {
+            //         console.log(error);
+            //     } else {
+            //         console.log('Email sent: ' + info.response);
+            //     }
+            // });
         }
     })
     Feedback.deleteMany({ Book_id: bookid });

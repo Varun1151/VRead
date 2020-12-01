@@ -5,6 +5,7 @@ const User = require("../models/user")
 const upload = require("../others/multer")
 const { isLoggedIn } = require("../middleware/middleware")
 const Book = require("../models/book")
+    // const transporter = require("../others/nodemailer")
     // const Feedback = require("../models/feedback")
 
 function titlecase(str) {
@@ -55,6 +56,22 @@ router.post("/signup", upload.single('image'), (req, res) => {
             res.redirect("back")
         }
         passport.authenticate("local")(req, res, function() {
+            // var mailOptions = {
+            //     // from: 'youremail@gmail.com',
+            //     from: 'youremail@gmail.com',
+            //     to: seller,buyer
+            //     subject: 'VRead Contact share',
+            //     text: 'Thank you for using our service'
+            // };
+
+            // transporter.sendMail(mailOptions, function(error, info) {
+            //     if (error) {
+            //         console.log(error);
+            //     } else {
+            //         console.log('Email sent: ' + info.response);
+            //     }
+            // });
+
             req.flash('success', "Welcome " + user.Name);
             res.redirect("/home")
         });
@@ -65,9 +82,7 @@ router.get("/profile", isLoggedIn, (req, res) => {
     res.render("profile", { user: req.user });
 })
 
-// router.get("/editprofileinfo", isLoggedIn, (req, res) => {
-//     res.render("editprofileinfo", isLoggedIn, { user: req.user })
-// })
+
 
 router.put("/editprofileinfo", isLoggedIn, (req, res) => {
 
@@ -89,9 +104,7 @@ router.put("/editprofileinfo", isLoggedIn, (req, res) => {
     })
 });
 
-// router.get("/editprofilepic", isLoggedIn, (req, res) => {
-//     res.render("editprofilepic", { user: req.user })
-// })
+
 
 router.put("/editprofilepic", upload.single("image"), isLoggedIn, (req, res) => {
 
@@ -146,6 +159,8 @@ router.put("/editprofilepic", upload.single("image"), isLoggedIn, (req, res) => 
 //         };
 //     })
 // })
+
+
 router.get("/youruploads", isLoggedIn, (req, res) => {
     Book.find({ UUSN: req.user.username }, (err, books) => {
         if (err) {

@@ -18,7 +18,7 @@
                 </h1>
 
                 <div class="row">
-                    <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="col-lg-4 col-md-12 col-sm-12 img-thumbnail">
                         <img class="img-responsive photo" src="data:<%=book.Cover_page_photo.contentType%>;base64, 
                          <%=book.Cover_page_photo.data.toString('base64')%>">
                     </div>
@@ -54,10 +54,10 @@
                                         </h4>
 
                                         <h4>USN :
-                                            <%=user.username%>
+                                            <%= user.username%>
                                         </h4>
                                         <h4>Name :
-                                            <%=user.Name%>
+                                            <%= user.Name%>
                                         </h4>
 
                                         <h4><strong>Uploaded on : </strong>
@@ -69,7 +69,6 @@
                                         <hr>
                                         <div class="caption">
                                             <% if(currentUser){ if (book.UUSN===currentUser.username){ %>
-                                                <!-- <a class="btn btn-warning" href="/editbookinfo/<%=book._id%>">Edit info</a> -->
                                                 <button class="btn btn-warning" id="editbtn">Edit info</button>
                                                 <button class='btn btn-danger' style="display: inline;" id="deletebtn">Delete</button>
                                                 <form style="display: none;" id="deleteform" action="/deletebookinfo/<%=book._id%>?_method=DELETE" method="POST"></form>
@@ -77,9 +76,9 @@
                                                 <div id="editconfirm" class="extras">
                                                     <form action="/editbookinfo/<%=book._id%>?_method=PUT" method="POST">
                                                         <div class="form-group">
-                                                            <label for="Dept">Department</label>
-                                                            <select name="Dept" id="Dept" class="form-control">
-                                                                <option disabled selected value>--Select Department--</option>
+                                                            <label for="Deptselect">Department</label>
+                                                            <select name="Dept" id="Deptselect" class="form-control">
+                                                                <option value>--Select Department--</option>
                                                                 <option value="CSE">CSE</option>
                                                                 <option value="ISE">ISE</option>
                                                                 <option value="ECE">ECE</option>
@@ -160,5 +159,6 @@
 
                 </div>
                 </div>
+
                 <script src="/scripts/show.js"></script>
                 <%- include("footer") -%>
