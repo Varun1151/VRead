@@ -5,7 +5,7 @@ const User = require("../models/user")
 const upload = require("../others/multer")
 const { isLoggedIn } = require("../middleware/middleware")
 const Book = require("../models/book")
-    // const transporter = require("../others/nodemailer")
+const transporter = require("../others/nodemailer")
     // const Feedback = require("../models/feedback")
 
 function titlecase(str) {
@@ -56,21 +56,20 @@ router.post("/signup", upload.single('image'), (req, res) => {
             res.redirect("back")
         }
         passport.authenticate("local")(req, res, function() {
-            // var mailOptions = {
-            //     // from: 'youremail@gmail.com',
-            //     from: 'youremail@gmail.com',
-            //     to: seller,buyer
-            //     subject: 'VRead Contact share',
-            //     text: 'Thank you for using our service'
-            // };
+            var mailOptions = {
+                from: '1ms18cs133@gmail.com',
+                to: newuser.Email,
+                subject: 'VRead Welcome',
+                text: 'Team Vread welcomes you. Thank you for using our service'
+            };
 
-            // transporter.sendMail(mailOptions, function(error, info) {
-            //     if (error) {
-            //         console.log(error);
-            //     } else {
-            //         console.log('Email sent: ' + info.response);
-            //     }
-            // });
+            transporter.sendMail(mailOptions, function(error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
 
             req.flash('success', "Welcome " + user.Name);
             res.redirect("/home")

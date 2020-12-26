@@ -5,7 +5,7 @@ const { isLoggedIn, checkbookownership } = require("../middleware/middleware")
 const User = require("../models/user")
 const Book = require("../models/book")
 const Feedback = require("../models/feedback")
-    // const transporter = require("../others/nodemailer")
+const transporter = require("../others/nodemailer")
 
 function titlecase(str) {
     if (str.length > 0) {
@@ -119,6 +119,25 @@ router.get("/requestbook/:id", isLoggedIn, (req, res) => {
                     console.log(err)
                 }
             })
+            User.findOne({ username: updatedBook.UUSN }, { Email: 1 }, (err, uploadeduser) => {
+                var mailOptions = {
+                    from: '1ms18cs133@gmail.com',
+                    to: uploadeduser.Email,
+                    subject: 'Book request ' + updatedBook.Book_name,
+                    text: 'User with usn ' + req.user.username +
+                        " has requested for your book titled " + updatedBook.Book_name +
+                        ". Please do acknowledge or reject in upload section"
+                };
+
+                transporter.sendMail(mailOptions, function(error, info) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                    }
+                });
+            })
+
             res.redirect("/home")
         }
     })
@@ -137,28 +156,44 @@ router.get("/positiveacknowledgement/:id", checkbookownership, (req, res) => {
                 seller = user.Email
             })
 
-            User.findOneAndUpdate({ username: book.RUSN }, { $inc: { No_of_request: -1 } }, (err, user) => {
+            User.findOneAndUpdate({ username: book.RUSN }, { $inc: { No_of_request: -1 } }, (err, receiver) => {
                 if (err) {
                     console.log(err.message)
                 }
-                buyer = user.Email
+                buyer = receiver.Email
+                var mailOptions = {
+                    // from: 'youremail@gmail.com',
+                    from: '1ms18cs133@gmail.com',
+                    to: seller + "," + buyer,
+                    subject: 'VRead Contact share',
+                    html: "<h3>Seller's Details</h3>" +
+                        "<h6>USN : " + req.user.username + "</h6>" +
+                        "<h6>Name : " + req.user.Name + "</h6>" +
+                        "<h6>Contact no : " + req.user.Ph_No + "</h6>" +
+                        "<h6>Email :" + req.user.Email + "</h6><br><hr>" +
+
+                        "<h3>Book Details</h3>" +
+                        "<h6>Book Name : " + book.Book_name + "</h6>" +
+                        "<h6>Author : " + book.Author + "</h6>" +
+                        "<h6>Price :" + book.Price + "</h6><br><hr>" +
+
+                        "<h3>Buyer's Details</h3>" +
+                        "<h6>USN : " + receiver.username + "</h6>" +
+                        "<h6>Name : " + receiver.Name + "</h6>" +
+                        "<h6>Contact no : " + receiver.Ph_No + "</h6>" +
+                        "<h6>Email :" + receiver.Email + "</h6>"
+                };
+
+                transporter.sendMail(mailOptions, function(error, info) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                    }
+                });
             })
 
-            // var mailOptions = {
-            //     // from: 'youremail@gmail.com',
-            //     from: 'youremail@gmail.com',
-            //     to: seller,buyer
-            //     subject: 'VRead Contact share',
-            //     text: 'Thank you for using our service'
-            // };
 
-            // transporter.sendMail(mailOptions, function(error, info) {
-            //     if (error) {
-            //         console.log(error);
-            //     } else {
-            //         console.log('Email sent: ' + info.response);
-            //     }
-            // });
         }
     })
     Feedback.deleteMany({ Book_id: bookid });
@@ -179,9 +214,25 @@ router.get("/negativeacknowledgement/:id", checkbookownership, (req, res) => {
                 if (err) {
                     console.log(err.message)
                 }
+                var mailOptions = {
+                    from: '1ms18cs133@gmail.com',
+                    to: user.Email,
+                    subject: 'Request rejected',
+                    text: "Your request for book titled " + book.Book_name + " uploaded by : " + book.UUSN + " has been rejected"
+                };
+
+                transporter.sendMail(mailOptions, function(error, info) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                    }
+                });
             })
         }
     })
+
+
     Book.findByIdAndUpdate(req.params.id, { RUSN: null, Request_status: false }, (err, book) => {
         if (err) {
             console.log(err.message)
@@ -190,7 +241,7 @@ router.get("/negativeacknowledgement/:id", checkbookownership, (req, res) => {
             res.redirect("/youruploads")
         }
     });
-})
+});
 
 
 router.post("/feedback", isLoggedIn, async(req, res) => {
@@ -258,5 +309,7 @@ router.delete("/deletebookinfo/:id", checkbookownership, (req, res) => {
     })
 });
 
-
+router.get("*", (req, res) => {
+    res.render("error404")
+})
 module.exports = router;

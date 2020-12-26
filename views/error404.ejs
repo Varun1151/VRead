@@ -1,0 +1,32 @@
+<%- include("header") -%>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/darkmode.css">
+    <style>
+        .error {
+            color: white;
+            background-color: blue;
+            width: max-content;
+            padding: 20px;
+            box-shadow: 3px 8px 8px 2px #888888;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            margin: 5px;
+            border: 1px solid transparent;
+            border-radius: 5px;
+            border-width: 100%;
+        }
+    </style>
+    </head>
+
+    <body>
+        <%- include("navbar") -%>
+            <div class="error">
+                <h1>ERROR 404 - PAGE NOT FOUND</h1>
+                <br><br>
+                <a href="/home" class="btn btn-info">Go to home page <i class="fa fa-fw fa-home"></i></a>
+            </div>
+            <%- include("footer") -%>
