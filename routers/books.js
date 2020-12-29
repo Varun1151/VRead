@@ -97,6 +97,7 @@ router.post("/newbookentry", isLoggedIn, upload.single("image"), async(req, res)
             if (err) {
                 console.log(err)
             }
+            console.log("Increment due to upload " + data.No_of_uploads);
         })
         req.flash("success", "Book uploaded")
         res.redirect("/home")
@@ -124,9 +125,9 @@ router.get("/requestbook/:id", isLoggedIn, (req, res) => {
                     from: '1ms18cs133@gmail.com',
                     to: uploadeduser.Email,
                     subject: 'Book request ' + updatedBook.Book_name,
-                    text: 'User with usn ' + req.user.username +
-                        " has requested for your book titled " + updatedBook.Book_name +
-                        ". Please do acknowledge or reject in upload section"
+                    html: '<p>User with usn <strong>' + req.user.username +
+                        "</strong> has requested for your book titled <strong>" + updatedBook.Book_name +
+                        "</strong>. Please do acknowledge or reject in upload section</p>"
                 };
 
                 transporter.sendMail(mailOptions, function(error, info) {
@@ -218,7 +219,8 @@ router.get("/negativeacknowledgement/:id", checkbookownership, (req, res) => {
                     from: '1ms18cs133@gmail.com',
                     to: user.Email,
                     subject: 'Request rejected',
-                    text: "Your request for book titled " + book.Book_name + " uploaded by : " + book.UUSN + " has been rejected"
+                    html: "<p>Your request for book titled <strong>" + book.Book_name +
+                        "</strong> uploaded by <strong>" + book.UUSN + "</strong> has been rejected</p>"
                 };
 
                 transporter.sendMail(mailOptions, function(error, info) {

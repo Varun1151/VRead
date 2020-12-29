@@ -57,10 +57,10 @@ router.post("/signup", upload.single('image'), (req, res) => {
         }
         passport.authenticate("local")(req, res, function() {
             var mailOptions = {
-                from: '1ms18cs133@gmail.com',
+                from: 'vread10283335@gmail.com',
                 to: newuser.Email,
                 subject: 'VRead Welcome',
-                text: 'Team Vread welcomes you. Thank you for using our service'
+                html: '<p>Welcome <strong>' + newuser.Name + "</strong>. Thank you for using our service</p>"
             };
 
             transporter.sendMail(mailOptions, function(error, info) {
@@ -85,12 +85,12 @@ router.get("/profile", isLoggedIn, (req, res) => {
 
 router.put("/editprofileinfo", isLoggedIn, (req, res) => {
 
-    const editeduser = new User({
+    const editeduser = {
         Name: titlecase(req.body.name),
         Address: req.body.addr,
         Ph_No: req.body.phno,
         Email: req.body.email
-    });
+    };
 
     User.findByIdAndUpdate(req.user._id, editeduser, (err, updatedUser) => {
         if (err) {
@@ -124,40 +124,6 @@ router.put("/editprofilepic", upload.single("image"), isLoggedIn, (req, res) => 
 });
 
 
-// router.get("/deleteuser", isLoggedIn, (req, res) => {
-//     var usn = req.user.username
-//     console.log(usn)
-//     Book.find({ UUSN: usn }, (err, books) => {
-//         books.forEach(book => {
-//             if (book.Request_status) {
-//                 req.flash("error", "There are some requests to your uploaded books. Please acknowledge or reject them before you delete your account");
-//                 res.redirect("/youruploads")
-//             }
-//             Feedback.deleteMany({ Book_id: book._id })
-//         })
-//     })
-//     Book.find({ RUSN: usn }, (err, books) => {
-//         books.forEach(book => {
-//             Book.findOneAndUpdate({ RUSN: usn }, { RUSN: null, Request_status: false }, (err, book) => {})
-//         })
-//     })
-//     Feedback.deleteMany({ USN: usn });
-//     Book.deleteMany({ UUSN: usn })
-//     res.redirect("/deleteuser?_method=DELETE")
-// })
-
-// router.delete("/deleteuser", isLoggedIn, (req, res) => {
-//     User.findOneAndRemove({ username: req.user.username }, (err) => {
-//         if (err) {
-//             req.flash("error", err.message);
-//             res.redirect("/home")
-//         } else {
-//             console.log("in remove section")
-//             req.flash("success", "Account deleted successfully. We are sad to see you go")
-//             res.redirect("/home")
-//         };
-//     })
-// })
 
 
 router.get("/youruploads", isLoggedIn, (req, res) => {
